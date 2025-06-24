@@ -77,3 +77,55 @@ registerForm.addEventListener("submit", async (event) => {
 
     if(validations) await createUsers(userData);
 })
+
+// Petición para traer todos los usuarios.
+
+async function getAllUsers() {
+    const url = `${baseUrl}/users`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Error en la petición getAllUsers")
+        }
+        const allUsers = await response.json();
+        console.log(allUsers); 
+        listarUsuarios(allUsers)
+        // return allUsers;
+    } catch (error) {
+        console.error("Error")
+    }
+}
+
+
+function listarUsuarios(users) {
+    const userList = document.getElementById("user-list");
+    users.forEach(elemento => {
+
+        const userDiv = document.createElement("div");
+        userDiv.classList.add("card");
+
+        const name = document.createElement("p");
+        name.textContent = `nombre:${elemento.name}`
+
+        const email = document.createElement("p");
+        email.textContent = `email:${elemento.email}`
+
+        const phoneNumber = document.createElement("p");
+        phoneNumber.textContent = `telefono:${elemento.phone_number}`
+        
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "x";
+        const editButton = document.createElement("button");
+        editButton.textContent = "editar";
+
+        userDiv.appendChild(name);
+        userDiv.appendChild(email);
+        userDiv.appendChild(phoneNumber);
+        userDiv.appendChild(deleteButton);
+        userDiv.appendChild(editButton);
+        userList.appendChild(userDiv);
+    })
+  
+}
+
+getAllUsers()
