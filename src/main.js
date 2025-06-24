@@ -123,6 +123,10 @@ function listarUsuarios(users) {
             deleteUsers(elemento.id)
         })
 
+        editButton.addEventListener("click", () => {
+            editData(elemento.id)
+        });
+
         userDiv.appendChild(name);
         userDiv.appendChild(email);
         userDiv.appendChild(phoneNumber);
@@ -154,4 +158,52 @@ async function deleteUsers(id) {
     }
 
 }
+
+//Petición PUT para editar usuario
+
+async function editUsers(id, userData) {
+    const url = `${baseUrl}/users/${id}`;
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if(!response.ok) {
+            throw new Error(error)
+        }
+
+        const data = await response.json();
+        console.log(data, "Usuario actualizado");
+        getAllUsers();
+
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+function editData (id) {
+    const newName = prompt("Introduce nuevo nombre");
+    const newEmail = prompt("Introduce nuevo email");
+    const newPassword = prompt("Introduce nueva contraseña");
+    const newPhoneNumber = parseInt(prompt("Introduce nuevo número de teléfono"));
+
+    const updateData = {
+        name: newName,
+        email: newEmail,
+        password: newPassword,
+        phone_number: newPhoneNumber
+    };
+
+    editUsers(id, updateData);
+
+}
+
+
+
+
 
