@@ -99,6 +99,7 @@ async function getAllUsers() {
 
 function listarUsuarios(users) {
     const userList = document.getElementById("user-list");
+    userList.innerHTML= ""
     users.forEach(elemento => {
 
         const userDiv = document.createElement("div");
@@ -118,6 +119,10 @@ function listarUsuarios(users) {
         const editButton = document.createElement("button");
         editButton.textContent = "editar";
 
+        deleteButton.addEventListener("click",() => {
+            deleteUsers(elemento.id)
+        })
+
         userDiv.appendChild(name);
         userDiv.appendChild(email);
         userDiv.appendChild(phoneNumber);
@@ -129,3 +134,24 @@ function listarUsuarios(users) {
 }
 
 getAllUsers()
+
+
+//Petición para borra usuario
+
+async function deleteUsers(id) {
+    const url = `${baseUrl}/users/${id}`;
+    try {
+        const response = await fetch(url, {
+          method: "DELETE",                
+            
+        })
+        console.log("usuario eliminado");
+
+        getAllUsers()
+        
+    } catch (error) {
+        console.error(error);
+    }
+
+}
+
